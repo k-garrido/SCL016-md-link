@@ -1,0 +1,1 @@
+MD-Link function shoul not be able to read this file.
