@@ -1,4 +1,25 @@
 {
   "name": "md-links",
-  "version": "0.1.0"
+  "version": "0.1.0",
+  "description": "Libreria desarrollada para leer los links de los archivos Markdown y verificar su estado",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/k-garrido/SCL016-md-link.git"
+  },
+  "keywords": [
+    "mdLinks"
+  ],
+  "author": "Katherinne Fernanda Garrido Lopez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/k-garrido/SCL016-md-link/issues"
+  },
+  "homepage": "https://github.com/k-garrido/SCL016-md-link#readme"
 }
