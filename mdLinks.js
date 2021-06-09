@@ -98,14 +98,33 @@ const validateArray = (arrLinks) => {
 };
 
 // Funcion para retornar la informacion de la opcion --stats
-
 const stats = (validateArray) =>  {
+  const statsObject = {}
+  statsObject.Total = validateArray.length
+  statsObject.Unique = 0
+  uniqueLinks = new Set()
   validateArray.forEach(object => {
-    console.log(object);
+    uniqueLinks.add (object.href)
   });
+ statsObject.Unique = uniqueLinks.size
+   return statsObject
 }
-
-
+// Funcion para retornar la informacion para las opciones --statats y --validate
+const statsValidate = (validateArray) =>  {
+  const statsObject = {}
+  statsObject.Total = validateArray.length
+  statsObject.Unique = 0
+  statsObject.Broken = 0
+  uniqueLinks = new Set()
+  validateArray.forEach(object => {
+    uniqueLinks.add(object.href)
+    if (object.statusText === 'FAIL') {
+      statsObject.Broken += 1
+    }
+  });
+ statsObject.Unique = uniqueLinks.size
+   return statsObject
+}
 
 // Extrayendo links
 
@@ -118,7 +137,7 @@ const mdLinks = () => {
       return getLinks(res, searchMD(argv[0]))
     })
     .then((array) => {
-      if (argv[1] === '--validate' || argv[2] === '--validate') {
+      if (argv[1] === '--validate' && argv[2] === undefined) {
         validateArray(array)
         .then (res => console.log(res)) 
       }
@@ -126,8 +145,10 @@ const mdLinks = () => {
     })
     .then(res => {
       stats(res);
-      if (argv[1] === '--stats' || argv[2] === '--stats') {
-        console.log('stats funcionando');
+      if (argv[1] === '--stats' && argv[2] === undefined) {
+        console.table(stats(res));
+      } else if (argv[1] === '--stats' || argv[2] === '--stats' && argv[1] === '--validate' || argv[2] === '--validate'){
+        console.table(statsValidate(res));
       }
     })
     .catch(err => {
