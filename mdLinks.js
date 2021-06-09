@@ -2,8 +2,7 @@ const fs = require('fs');
 const argv = process.argv.slice(2);
 const pathModule = require('path');
 const marked = require("marked");
-
-
+const fetch = require('node-fetch');
 
 
 
@@ -42,34 +41,98 @@ const readMD = (finalPath) => {
   });
 };
 
-// Funcion para extraer links
-const getLinks = (pathFile) => {
-  const links = [];
-  const myRen = new marked.Renderer();
-  
-    myRen.link = (href, title, text) => {
-      links.push({
+// Extrayendo links del archivo .md
+const getLinks = (content, path) => {
+  return new Promise((resolve, reject) => {
+    const arrayLinks = [];
+    const render = new marked.Renderer();
+    render.link = (href, title, text) => {
+      arrayLinks.push({
         href,
         text,
-        file ,
+        file: path,
       });
     };
-    marked(pathFile, { renderer: myRen });
-  
-  return links;
+    marked(content, {
+      renderer: render
+    });
+    resolve(arrayLinks)
+  })
 };
 
+// Agregando el status y el ok 
+const validateArray = (arrLinks) => {
+  const promises = arrLinks.map((object) =>
+    fetch(object.href)
+    .then((res) => {
+      if (res.status === 200) {
+        return {
+          href: object.href,
+          text: object.text,
+          file: object.file,
+          status: res.status,
+          statusText: res.statusText,
+        };
+      } else {
+        return {
+          href: object.href,
+          text: object.text,
+          file: object.file,
+          status: res.status,
+          statusText: "FAIL",
+        };
+      }
+
+    })
+    .catch((err) =>
+      ({
+        href: object.href,
+        text: object.text,
+        file: object.file,
+        status: 404,
+        statusText: "FAIL",
+      })
+    )
+  );
+  return Promise.all(promises);
+};
+
+// Funcion para retornar la informacion de la opcion --stats
+
+const stats = (validateArray) =>  {
+  validateArray.forEach(object => {
+    console.log(object);
+  });
+}
+
+
+
 // Extrayendo links
+
 const mdLinks = () => {
   readMD(searchMD(argv[0]))
     .then(res => {
-      const respuesta = res
-      console.table (getLinks(respuesta))
+      if (argv[0] !== 'undefined' && argv[1] === undefined) {
+        console.log(getLinks(res, searchMD(argv[0])))
+      }
+      return getLinks(res, searchMD(argv[0]))
+    })
+    .then((array) => {
+      if (argv[1] === '--validate' || argv[2] === '--validate') {
+        validateArray(array)
+        .then (res => console.log(res)) 
+      }
+      return validateArray(array)
+    })
+    .then(res => {
+      stats(res);
+      if (argv[1] === '--stats' || argv[2] === '--stats') {
+        console.log('stats funcionando');
+      }
     })
     .catch(err => {
       console.error(err)
     })
-
 }
 
 mdLinks()
@@ -81,8 +144,6 @@ mdLinks()
 
 
 // Exportando funciones
-
 module.exports = {
-  searchMD,
-  readMD
+  mdLinks
 };
