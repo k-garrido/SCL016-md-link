@@ -6,8 +6,11 @@
   "directories": {
     "test": "test"
   },
+  "bin": {
+    "md-links": "./cli.js"
+  },
   "scripts": {
-    "test": "jest"
+    "test": "jest --coverage"
   },
   "repository": {
     "type": "git",
