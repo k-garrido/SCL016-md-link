@@ -1,5 +1,5 @@
 {
-  "name": "md-links",
+  "name": "md-links-k-garrido",
   "version": "0.1.0",
   "description": "Libreria desarrollada para extraer los links de los archivos Markdown y verificar su estado",
   "main": "index.js",
