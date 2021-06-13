@@ -1,4 +1,5 @@
-const { searchMD, readMD } = require('../mdLinks.js');
+const { searchMD, readMD } = require('../functions.js');
+
 console.log (searchMD)
 
 
