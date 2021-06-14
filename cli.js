@@ -14,7 +14,8 @@ const mdLinksCLI = () => {
   readMD(searchMD(argv[0]))
     .then(res => {
       if (argv[0] !== 'undefined' && argv[1] === undefined) {
-        console.log(getLinks(res, searchMD(argv[0])));
+        getLinks(res, searchMD(argv[0]))
+        .then (res => console.log(res))
       }
       return getLinks(res, searchMD(argv[0]));
     })
@@ -37,5 +38,6 @@ const mdLinksCLI = () => {
       console.error(err);
     });
 };
+
 
 mdLinksCLI();

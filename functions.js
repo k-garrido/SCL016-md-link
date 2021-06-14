@@ -120,23 +120,7 @@ const statsValidate = (validateArray) => {
   return statsObject;
 };
 
-// console.log(validateArray([
-//   {
-//     href: 'http://www.google.cl',
-//     text: 'www.google.cl',
-//     file: 'C:\\Users\\Katherinne\\Desktop\\MDLink\\SCL016-md-link\\exampleFolder\\links.md'
-//   },
-//   {
-//     href: 'http://www.facebook.com',
-//     text: 'www.facebook.com',
-//     file: 'C:\\Users\\Katherinne\\Desktop\\MDLink\\SCL016-md-link\\exampleFolder\\links.md'
-//   },
-//   {
-//     href: 'http://www.youtube.com',
-//     text: 'www.youtube.com',
-//     file: 'C:\\Users\\Katherinne\\Desktop\\MDLink\\SCL016-md-link\\exampleFolder\\links.md'
-//   }
-// ]).then (res => console.log(res)))
+
 // Exportando funciones
 module.exports = {
   searchMD,
